@@ -24,5 +24,5 @@ def mat_mul(mat1, mat2):
     for i in range(len(mati)):
         for j in range(len(matj[0])):
             for k in range(len(matj)):
-                mat3[i][j] += mat1[]][k]*mat2[k][j]
+                mat3[i][j] += mat1[i][k]*mat2[k][j]
     return mat3
