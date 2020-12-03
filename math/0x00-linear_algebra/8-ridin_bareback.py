@@ -13,8 +13,8 @@ def mat_mul(mat1, mat2):
         return None
 
     if len(mat1) == len(mat2[0]):
-       mati = mat2
-       matj = mat1
+        mati = mat2
+        matj = mat1
     else:
         mati = mat1
         matj = mat2
