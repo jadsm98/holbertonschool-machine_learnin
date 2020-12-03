@@ -19,7 +19,7 @@ def mat_mul(mat1, mat2):
         mati = mat1
         matj = mat2
 
-        mat3 = [[0 for i in matj[0]] for j in mati]
+    mat3 = [[0 for i in matj[0]] for j in mati]
 
     for i in range(len(mati)):
         for j in range(len(matj[0])):
