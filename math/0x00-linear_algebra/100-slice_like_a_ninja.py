@@ -8,7 +8,6 @@ def np_slice(matrix, axes={}):
     """
     function
     """
-
     args = []
     list_axes = []
     max_val = max(axes.keys())
@@ -19,5 +18,5 @@ def np_slice(matrix, axes={}):
             sl = slice(*axes[i])
         else:
             sl = slice(None)
-            args.append(sl)
+        args.append(sl)
     return matrix[tuple(args)]
