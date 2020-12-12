@@ -9,7 +9,7 @@ def poly_derivative(poly):
     function
     """
 
-    if type(poly) is not list:
+    if type(poly) is not list or len(poly) == 0 or poly is None:
         return None
     if not all(type(i) in [int, float] for i in poly):
         return None
