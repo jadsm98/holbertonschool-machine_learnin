@@ -17,6 +17,9 @@ def poly_integral(poly, C=0):
         return None
 
     integ = [C]
+    if sum(poly) == 0:
+        return integ
+    
     for i in range(len(poly)):
         coef = poly[i]/(i + 1)
         if round(coef) == coef:
