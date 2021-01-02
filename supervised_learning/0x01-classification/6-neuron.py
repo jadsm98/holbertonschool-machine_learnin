@@ -66,6 +66,14 @@ class Neuron:
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """trains the neuron"""
+        if not type(iterations) is int:
+            raise TypeError("iterations must be an integer")
+        if iterations <= 0:
+            raise ValueError("iterations must be a positive integer")
+        if not type(alpha) is float:
+             raise TypeError("alpha must be a float")
+        if alpha <= 0:
+             raise ValueError("alpha must be positive")
         m = Y.shape[1]
         for i in range(iterations):
             z = np.matmul(self.__W, X) + self.__b
