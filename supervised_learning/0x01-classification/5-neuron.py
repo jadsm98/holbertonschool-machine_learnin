@@ -51,8 +51,8 @@ class Neuron:
         """method"""
         z = np.matmul(self.__W, X) + self.__b
         A = sigmoid(z)
-        cost = np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/
-        (Y.shape[1])
+        cost = np.sum(-(Y*np.log(A) + \
+                        (1-Y)*np.log(1.0000001 - A)))/(Y.shape[1])
         A = np.where(A >= 0.5, 1, 0)
         return A, cost
 
