@@ -8,13 +8,13 @@ import numpy as np
 def sigmoid(z):
     """sigmoid function"""
     return 1/(1 + np.exp(-z))
-    
+
 
 class Neuron:
-    """                                                                                                                    class Neuron                                                                                                           """
+    """class Neuron"""
 
     def __init__(self, nx):
-        """                                                                                                                    Constructor                                                                                                            """
+        """Constructor"""
 
         if not type(nx) is int:
             raise TypeError("nx must be an integer")

@@ -8,13 +8,13 @@ import numpy as np
 def sigmoid(z):
     """sigmoid function"""
     return 1/(1 + np.exp(-z))
-    
+
 
 class Neuron:
-    """                                                                                                                    class Neuron                                                                                                           """
+    """class Neuron"""
 
     def __init__(self, nx):
-        """                                                                                                                    Constructor                                                                                                            """
+        """Constructor"""
 
         if not type(nx) is int:
             raise TypeError("nx must be an integer")
@@ -51,6 +51,7 @@ class Neuron:
         """method"""
         z = np.matmul(self.__W, X) + self.__b
         A = sigmoid(z)
-        cost = np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/(Y.shape[1])
+        cost = np.sum(-(Y*np.log(A) +
+                        (1-Y)*np.log(1.0000001 - A)))/(Y.shape[1])
         A = np.where(A >= 0.5, 1, 0)
         return A, cost

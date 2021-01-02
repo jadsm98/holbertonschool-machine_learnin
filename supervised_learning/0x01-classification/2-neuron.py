@@ -13,10 +13,10 @@ def sigmoid(z):
     
 
 class Neuron:
-    """                                                                                                                    class Neuron                                                                                                           """
+    """class Neuron"""
 
     def __init__(self, nx):
-        """                                                                                                                    Constructor                                                                                                            """
+        """Constructor"""
 
         if not type(nx) is int:
             raise TypeError("nx must be an integer")
