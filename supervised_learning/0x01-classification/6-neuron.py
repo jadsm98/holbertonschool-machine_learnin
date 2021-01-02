@@ -78,12 +78,13 @@ class Neuron:
         m = Y.shape[1]
         for i in range(iterations):
             z = np.matmul(self.__W, X) + self.__b
-            A = sigmoid(z)
-            cost = np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/m
-            A = np.where(A >= 0.5, 1, 0)
-            dz = A - Y
+            self.__A = sigmoid(z)
+            cost = np.sum(-(Y*np.log(self.__A) +
+                            (1-Y)*np.log(1.0000001 - self.__A)))/m
+            dz = self.__A - Y
             dw = (np.matmul(dz, X.T))/m
             db = (np.sum(dz))/m
+            self.__A = np.where(self.__A >= 0.5, 1, 0)
             self.__W -= alpha*dw
             self.__b -= alpha*db
-        return A, cost
+        return self.__A, cost
