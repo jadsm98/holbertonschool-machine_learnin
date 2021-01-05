@@ -73,4 +73,5 @@ class NeuralNetwork:
     def cost(self, Y, A):
         """cost"""
         m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/m
+        return np.sum(-(Y*np.log(A) +
+                        (1-Y)*np.log(1.0000001 - A)))/m
