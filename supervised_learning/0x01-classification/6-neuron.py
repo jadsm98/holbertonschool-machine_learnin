@@ -51,15 +51,14 @@ class Neuron:
         """method"""
         z = np.matmul(self.__W, X) + self.__b
         A = sigmoid(z)
-        cost = np.sum(-(Y*np.log(A) +
-                        (1-Y)*np.log(1.0000001 - A)))/(Y.shape[1])
+        cost = self.cost(Y, A)
         A = np.where(A >= 0.5, 1, 0)
         return A, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """gradient descent"""
         m = Y.shape[1]
-        dz = A - Y
+        dz = A[:] - Y
         dw = (np.matmul(dz, X.T))/m
         db = (np.sum(dz))/m
         self.__W -= alpha*dw
@@ -72,19 +71,11 @@ class Neuron:
         if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
         if not type(alpha) is float:
-             raise TypeError("alpha must be a float")
+            raise TypeError("alpha must be a float")
         if alpha <= 0:
-             raise ValueError("alpha must be positive")
+            raise ValueError("alpha must be positive")
         m = Y.shape[1]
         for i in range(iterations):
-            z = np.matmul(self.__W, X) + self.__b
-            self.__A = sigmoid(z)
-            cost = np.sum(-(Y*np.log(self.__A) +
-                            (1-Y)*np.log(1.0000001 - self.__A)))/m
-            dz = self.__A - Y
-            dw = (np.matmul(dz, X.T))/m
-            db = (np.sum(dz))/m
-            self.__A = np.where(self.__A >= 0.5, 1, 0)
-            self.__W -= alpha*dw
-            self.__b -= alpha*db
-        return self.__A, cost
+            self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A, alpha=0.05)
+        return self.evaluate(X, Y)
