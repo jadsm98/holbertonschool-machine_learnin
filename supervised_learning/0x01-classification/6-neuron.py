@@ -57,7 +57,7 @@ class Neuron:
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """gradient descent"""
         m = Y.shape[1]
-        dz = A[:] - Y
+        dz = A - Y
         dw = (np.matmul(dz, X.T))/m
         db = (np.sum(dz))/m
         self.__W -= alpha*dw
@@ -67,14 +67,14 @@ class Neuron:
         """trains the neuron"""
         if not type(iterations) is int:
             raise TypeError("iterations must be an integer")
-        if iterations <= 0:
+        if iterations < 0:
             raise ValueError("iterations must be a positive integer")
         if not type(alpha) is float:
             raise TypeError("alpha must be a float")
-        if alpha <= 0:
+        if alpha < 0:
             raise ValueError("alpha must be positive")
         m = Y.shape[1]
-        for i in range(iterations):
+        for epoch in range(iterations):
             self.forward_prop(X)
-            self.gradient_descent(X, Y, self.__A, alpha=0.05)
+            self.gradient_descent(X, Y, self.__A, alpha)
         return self.evaluate(X, Y)
