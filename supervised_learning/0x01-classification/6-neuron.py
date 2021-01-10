@@ -49,11 +49,10 @@ class Neuron:
 
     def evaluate(self, X, Y):
         """method"""
-        z = np.matmul(self.__W, X) + self.__b
-        A = sigmoid(z)
-        cost = self.cost(Y, A)
-        A = np.where(A >= 0.5, 1, 0)
-        return A, cost
+        self.forward_prop(X)
+        cost = self.cost(Y, self.__A)
+        self.__A = np.where(self.__A >= 0.5, 1, 0)
+        return self.__A, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """gradient descent"""
