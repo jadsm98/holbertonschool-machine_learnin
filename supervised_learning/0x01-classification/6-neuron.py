@@ -45,13 +45,14 @@ class Neuron:
     def cost(self, Y, A):
         """method"""
         m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/m
+        return -np.sum(np.multiply(np.log(A),Y) +
+                      np.multiply(np.log(1.0000001 - A), (1-Y)))/m
 
     def evaluate(self, X, Y):
         """method"""
         self.forward_prop(X)
         cost = self.cost(Y, self.__A)
-        self.__A = np.where(self.__A >= 0.5, 1, 0)
+        self.__A = np.where(self.__A > 0.5, 1, 0)
         return self.__A, cost
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
