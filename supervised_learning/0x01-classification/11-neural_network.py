@@ -5,9 +5,9 @@
 import numpy as np
 
 
-def sigmoid(Z):
+def sigmoid(z):
     """function"""
-    return 1/(1 + np.exp(-Z))
+    return 1/(1 + np.exp(-z))
 
 
 class NeuralNetwork:
@@ -64,10 +64,10 @@ class NeuralNetwork:
 
     def forward_prop(self, X):
         """method"""
-        Z1 = np.matmul(self.__W1, X) + self.__b1
-        self.__A1 = sigmoid(Z1)
-        Z2 = np.matmul(self.__W2, self.__A1) + self.__b2
-        self.__A2 = sigmoid(Z2)
+        z1 = np.matmul(self.__W1, X) + self.__b1
+        self.__A1 = sigmoid(z1)
+        z2 = np.matmul(self.__W2, self.__A1) + self.__b2
+        self.__A2 = sigmoid(z2)
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
