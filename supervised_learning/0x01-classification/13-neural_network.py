@@ -87,12 +87,14 @@ class NeuralNetwork:
         return A2, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
-        """method"""
-        m = Y.shape[1]
+        """
+        gradient descent
+        """
+        m = len(Y[0])
         dz2 = A2 - Y
         dw2 = (np.matmul(dz2, A1.T))/m
         db2 = (np.sum(dz2, axis=1, keepdims=True))/m
-        dz1 = np.multiply(np.matmul(self.__W2.T, dz2), A1*(1-A1))
+        dz1 = np.multiply(np.matmul(self.__W2.T, dz2), A1*(1 - A1))
         dw1 = (np.matmul(dz1, X.T))/m
         db1 = (np.sum(dz1, axis=1, keepdims=True))/m
         self.__W1 -= alpha*dw1
