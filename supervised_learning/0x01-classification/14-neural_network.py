@@ -71,10 +71,11 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """cost"""
-        m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) +
-                        (1 - Y)*np.log(1.0000001 - A)))/m
+        """Cost"""
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
+        return cost
 
     def evaluate(self, X, Y):
         """method"""
@@ -87,45 +88,32 @@ class NeuralNetwork:
         return A2, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
-        """method"""
+        """
+        gradient descent
+        """
         m = Y.shape[1]
         dz2 = A2 - Y
-        dw2 = (np.matmul(dz2, A1.T))/m
-        db2 = (np.sum(dz2, axis=1, keepdims=True))/m
-        dz1 = np.multiply(np.matmul(self.__W2.T, dz2), A1)
-        dw1 = (np.matmul(dz1, X.T))/m
-        db1 = (np.sum(dz1, axis=1, keepdims=True))/m
-        self.__W1 -= alpha*dw1
-        self.__W2 -= alpha*dw2
-        self.__b1 -= alpha*db1
-        self.__b2 -= alpha*db2
+        dw2 = (np.matmul(dz2, A1.T)) / m
+        db2 = (np.sum(dz2, axis=1, keepdims=True)) / m
+        dz1 = np.matmul(self.__W2.T, dz2) * (A1 * (1 - A1))
+        dw1 = (np.matmul(dz1, X.T)) / m
+        db1 = (np.sum(dz1, axis=1, keepdims=True)) / m
+        self.__W1 -= alpha * dw1
+        self.__W2 -= alpha * dw2
+        self.__b1 -= alpha * db1
+        self.__b2 -= alpha * db2
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
-        """method"""
+        """"train"""
         if not type(iterations) is int:
             raise TypeError("iterations must be an integer")
-        if iterations <= 0:
+        if iterations < 0:
             raise ValueError("iterations must be a positive integer")
         if not type(alpha) is float:
             raise TypeError("alpha must be a float")
-        if alpha <= 0:
+        if alpha < 0:
             raise ValueError("alpha must be positive")
-        m = Y.shape[1]
-        for i in range(iterations):
-            z1 = np.matmul(self.__W1, X) + self.__b1
-            self.__A1 = sigmoid(z1)
-            z2 = np.matmul(self.__W2, self.__A1) + self.__b2
-            self.__A2 = sigmoid(z2)
-            cost = self.cost(Y, self.__A2)
-            dz2 = self.__A2 - Y
-            dw2 = (np.matmul(dz2, self.__A1.T))/m
-            db2 = (np.sum(dz2, axis=1, keepdims=True))/m
-            dz1 = np.multiply(np.matmul(self.__W2.T, dz2), self.__A1)
-            dw1 = (np.matmul(dz1, X.T))/m
-            db1 = (np.sum(dz1, axis=1, keepdims=True))/m
-            self.__A2 = np.where(self.__A2 >= 0.5, 1, 0)
-            self.__W1 -= alpha*dw1
-            self.__W2 -= alpha*dw2
-            self.__b1 -= alpha*db1
-            self.__b2 -= alpha*db2
-        return self.__A2, cost
+        for epoch in range(iterations):
+            self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
+        return self.evaluate(X, Y)
