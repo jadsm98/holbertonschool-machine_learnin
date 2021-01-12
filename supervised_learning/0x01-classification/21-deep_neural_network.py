@@ -75,17 +75,18 @@ class DeepNeuralNetwork:
         A = np.where(A > 0.5, 1, 0)
         return A, cost
 
-        def gradient_descent(self, Y, cache, alpha=0.05):
-            """method"""
-            m = Y.shape[1]
-            for i in range(self.__L, 0, -1):
-                if i == self.__L:
-                    dz = cache['A{}'.format(self.__L)] - Y
-                else:
-                    dz = np.multiply(np.matmul(
-                        self.__weights['W{}'.format(i+1)].T, dz),
-                        cache['A{}'.format(i)]*(1-cache['A{}'.format(i)]))
-                dw = np.matmul(dz, cache['A{}'.format(i-1)].T)/m
-                db = np.sum(dz, axis=1, keepdims=True)/m
-                self.__weights['W{}'.format(i)] -= alpha*dw
-                self.__weights['b{}'.format(i)] -= alpha*db
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """method"""
+        m = Y.shape[1]
+        copied = self.__weights.copy()
+        for i in range(self.__L, 0, -1):
+            if i == self.__L:
+                dz = cache['A{}'.format(self.__L)] - Y
+            else:
+                dz = np.multiply(np.matmul(
+                    copied['W{}'.format(i+1)].T, dz),
+                    cache['A{}'.format(i)]*(1-cache['A{}'.format(i)]))
+            dw = np.matmul(dz, cache['A{}'.format(i-1)].T)/m
+            db = np.sum(dz, axis=1, keepdims=True)/m
+            self.__weights['W{}'.format(i)] -= alpha*dw
+            self.__weights['b{}'.format(i)] -= alpha*db
