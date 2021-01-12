@@ -61,8 +61,8 @@ class Neuron:
         dz = A - Y
         dw = (np.matmul(dz, X.T))/m
         db = (np.sum(dz))/m
-        self.__W -= alpha*dw
-        self.__b -= alpha*db
+        self.__W = self.__W - alpha*dw
+        self.__b = self.__b - alpha*db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """trains the neuron"""
