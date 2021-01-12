@@ -56,6 +56,7 @@ class Neuron:
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """gradient descent"""
+        cost = self.cost(Y, self.__A)
         m = Y.shape[1]
         dz = A - Y
         dw = (np.matmul(dz, X.T))/m
@@ -75,6 +76,5 @@ class Neuron:
             raise ValueError("alpha must be positive")
         for epoch in range(iterations):
             self.forward_prop(X)
-            cost = self.cost(Y, self.__A)
             self.gradient_descent(X, Y, self.__A, alpha)
         return self.evaluate(X, Y)
