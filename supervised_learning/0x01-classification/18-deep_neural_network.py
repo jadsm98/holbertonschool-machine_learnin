@@ -53,13 +53,13 @@ class DeepNeuralNetwork:
     def weights(self):
         """getter"""
         return self.__weights
-         
+
     def forward_prop(self, X):
         """forward propagation"""
         self.__cache['A0'] = X
         for i in range(self.__L):
             z = np.matmul(self.__weights['W{}'.format(i+1)],
                           self.__cache['A{}'.format(i)]) + \
-                self.__weights['b{}'.format(i+1)]
+                          self.__weights['b{}'.format(i+1)]
             self.__cache['A{}'.format(i+1)] = sigmoid(z)
         return self.__cache['A{}'.format(self.__L)], self.__cache
