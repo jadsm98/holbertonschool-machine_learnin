@@ -53,7 +53,7 @@ class DeepNeuralNetwork:
     def weights(self):
         """getter"""
         return self.__weights
-
+         
     def forward_prop(self, X):
         """forward propagation"""
         self.__cache['A0'] = X
