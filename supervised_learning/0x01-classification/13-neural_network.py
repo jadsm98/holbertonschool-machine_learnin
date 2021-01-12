@@ -71,10 +71,11 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """cost"""
-        m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) +
-                        (1 - Y)*np.log(1.0000001 - A)))/m
+        """Cost"""
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
+        return cost
 
     def evaluate(self, X, Y):
         """method"""
@@ -90,7 +91,7 @@ class NeuralNetwork:
         """
         gradient descent
         """
-        m = len(Y[0])
+        m = Y.shape[1]
         dz2 = A2 - Y
         dw2 = (np.matmul(dz2, A1.T)) / m
         db2 = (np.sum(dz2, axis=1, keepdims=True)) / m
