@@ -71,10 +71,11 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """cost"""
-        m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) +
-                        (1 - Y)*np.log(1.0000001 - A)))/m
+        """method"""
+        cost_array = np.multiply(np.log(A), Y) + np.multiply((
+            1 - Y), np.log(1.0000001 - A))
+        cost = -np.sum(cost_array) / len(A[0])
+        return cost
 
     def evaluate(self, X, Y):
         """method"""
