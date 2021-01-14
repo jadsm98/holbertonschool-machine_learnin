@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""module"""
+
+"""
+module
+"""
 
 
 import tensorflow as tf
