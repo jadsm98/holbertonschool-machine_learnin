@@ -8,16 +8,15 @@ import tensorflow as tf
 def create_batch_norm_layer(prev, n, activation):
     """function"""
     init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-    layers = tf.layers.Dense(units=n, kernel_initializer=init,
-                             name="layers")
+    layers = tf.layers.Dense(units=n, activation=None,
+                             kernel_initializer=init)
     z = layers(prev)
-    gamma = tf.Variable(initial_value=tf.constant(1.0, shape=[n]),
-                        name="gamma", trainable=True)
-    beta = tf.Variable(initial_value=tf.constant(1.0, shape=[n]),
-                       name="beta", trainable=True)
-    mean, var = tf.nn.moments(z, axes=[0])
+    mean, var = tf.nn.moments(z, axis=[0])
+    gamma = tf.Variable(tf.constant(1.0, shape=[n]), trainable=True)
+    beta = tf.Variable(tf.constant(0.0, shape=[n]), trainable=True)
     norm = tf.nn.batch_normalization(z, mean, var, offset=beta,
-                                     scale=gamma, variance_epsilon=1e-8)
+                                     scale=gamma,
+                                     variance_epsilon=1e-8)
     if activation is None:
         return norm
     return activation(norm)
