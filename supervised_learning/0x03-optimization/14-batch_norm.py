@@ -12,6 +12,7 @@ def create_batch_norm_layer(prev, n, activation):
     z = layers(prev)
     gamma = tf.Variable(initial_value=tf.constant(1.0, shape=[n]))
     beta = tf.Variable(initial_value=tf.constant(1.0, shape=[n]))
-    norm = tf.nn.batch_normalization(Z, mean, var, offset=beta,
+    mean, var = tf.nn.moments(z, axes=0)
+    norm = tf.nn.batch_normalization(z, mean, var, offset=beta,
                                      scale=gamma, variance_epsilon=1e-8)
     return activation(norm)
