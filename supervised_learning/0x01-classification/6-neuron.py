@@ -45,7 +45,8 @@ class Neuron:
     def cost(self, Y, A):
         """method"""
         m = Y.shape[1]
-        return np.sum(-(Y*np.log(A) + (1-Y)*np.log(1.0000001 - A)))/m
+        return np.sum(-(Y*np.log(A) + \
+                        (1-Y)*np.log(1.0000001 - A)))/m
 
     def evaluate(self, X, Y):
         """method"""
@@ -56,7 +57,7 @@ class Neuron:
 
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """gradient descent"""
-        cost = self.cost(Y, self.__A)
+        cost = self.cost(Y, A)
         m = Y.shape[1]
         dz = A - Y
         dw = (np.matmul(dz, X.T))/m
