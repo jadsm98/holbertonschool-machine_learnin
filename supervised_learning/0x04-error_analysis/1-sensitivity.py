@@ -7,5 +7,5 @@ import numpy as np
 
 def sensitivity(confusion):
     """function"""
-    return np.divide(np.max(confusion, axis=1),
+    return np.divide(confusion.diagonal(),
                      np.sum(confusion, axis=1))
