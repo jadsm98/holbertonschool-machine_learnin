@@ -4,9 +4,12 @@ module
 """
 
 
+import numpy as np
+
+
 def create_confusion_matrix(labels, logits):
     """function"""
-    
+
     labels = list(labels)
     logits = list(logits)
     conf_matrix = [[0 for i in range(len(labels[0]))]
