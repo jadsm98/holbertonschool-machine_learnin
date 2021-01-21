@@ -104,7 +104,8 @@ class NeuralNetwork:
         self.__b1 -= alpha * db1
         self.__b2 -= alpha * db2
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """"train"""
         if not type(iterations) is int:
             raise TypeError("iterations must be an integer")
@@ -114,27 +115,26 @@ class NeuralNetwork:
             raise TypeError("alpha must be a float")
         if alpha < 0:
             raise ValueError("alpha must be positive")
-        if verbose is True or graph is True:
-            if type(step) != int:
+        if verbose or graph:
+            if not type(step) is int:
                 raise TypeError("step must be an integer")
-            if step < 0 or step > iterations:
+            if step <= 0 or step > iterations:
                 raise ValueError("step must be positive and <= iterations")
         costs = []
         iters = []
-        for i in range(iterations + 1):
-            A, cost = self.evaluate(X, Y)
-            if i != iterations:
-                self.forward_prop(X)
-                self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
-            if i % step == 0 and verbose:
-                print("Cost after {} iterations: {}".format(i, cost))
-                costs.append(cost)
-                iters.append(i)
-            if graph is True:
-                plt.plot(iters, costs)
-                plt.xlabel("iteration")
-                plt.ylabel("cost")
-                plt.title("Training Cost")
-                plt.xlim(0, iterations)
-                plt.show()
-            return (A, cost)
+        for epoch in range(iterations + 1):
+            self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
+            if epoch % step == 0 and verbose:
+                costs.append(self.cost(Y, self.__A2))
+                iters.append(epoch)
+                print("Cost after {} iterations: {}"
+                            .format(epoch, costs[epoch//step]))
+        if graph:
+            plt.plot(iters, costs)
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
+            plt.title("Training Cost")
+            plt.xlim(0, iterations)
+            plt.show()
+        return self.evaluate(X, Y)
