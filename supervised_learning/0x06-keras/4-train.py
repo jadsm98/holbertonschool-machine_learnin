@@ -9,7 +9,7 @@ def train_model(network, data, labels,
                 batch_size, epochs, verbose=True,
                 shuffle=False):
     """function"""
-    History = network.fit(x=data, y=labels, batch_size=batch_size,
+    history = network.fit(x=data, y=labels, batch_size=batch_size,
                           epochs=epochs, verbose=int(verbose),
                           shuffle=shuffle)
-    return History
+    return history.callbacks.History
