@@ -13,4 +13,4 @@ def train_model(network, data, labels, batch_size,
                           epochs=epochs, verbose=verbose,
                           shuffle=shuffle,
                           validation_data=validation_data)
-    return history
+    return K.callback.History()
