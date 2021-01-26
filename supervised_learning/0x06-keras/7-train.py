@@ -16,10 +16,10 @@ def train_model(network, data, labels, batch_size,
                                                patience=patience)
         callbacks = [early_stop]
     if learning_rate_decay and not validation_data is None:
-        l_rate = K.optimizers.schedules.InverseTimeDecay(
-            alpha, decay_steps=1, decay_rate=decay_rate)
+        def step_decay(epoch):
+            return alpha / (1 + decay_rate * epoch)
         learning_rate = K.callbacks.LearningRateScheduler(
-            l_rate, verbose=1)
+            step_decay, verbose=1)
         callbacks.append(learning_rate)
     else:
         callbacks = None
