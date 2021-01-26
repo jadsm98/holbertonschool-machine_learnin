@@ -11,11 +11,12 @@ def train_model(network, data, labels, batch_size,
                 learning_rate_decay=False, alpha=0.1,
                 decay_rate=1, verbose=True, shuffle=False):
     """function"""
-    if early_stopping and not validation_data is None:
+    callbacks = []
+    if early_stopping and validation_data is not None:
         early_stop = K.callbacks.EarlyStopping(monitor="val_loss",
                                                patience=patience)
-        callbacks = [early_stop]
-    if learning_rate_decay and not validation_data is None:
+        callbacks.append(early_stop)
+    if learning_rate_decay and validation_data is not None:
         def step_decay(epoch):
             return alpha / (1 + decay_rate * epoch)
         learning_rate = K.callbacks.LearningRateScheduler(
