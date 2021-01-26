@@ -15,7 +15,7 @@ def save_config(network, filename):
 
 def load_config(filename):
     """function"""
-    with open(filename, 'r'0 as f:
+    with open(filename, 'r') as f:
         read = f.read()
     from_json = K.models.model_from_json(read)
     return from_json
