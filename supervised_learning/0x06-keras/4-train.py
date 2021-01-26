@@ -12,4 +12,4 @@ def train_model(network, data, labels,
     history = network.fit(x=data, y=labels, batch_size=batch_size,
                           epochs=epochs, verbose=int(verbose),
                           shuffle=shuffle)
-    return K.callbacks.History().history
+    print history
