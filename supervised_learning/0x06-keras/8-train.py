@@ -23,6 +23,11 @@ def train_model(network, data, labels, batch_size,
         learning_rate = K.callbacks.LearningRateScheduler(
             step_decay, verbose=1)
         callbacks.append(learning_rate)
+    if save_best:
+        save_best = K.callbacks.ModelCheckpoint(filepath,
+                                                verbose=int(verbose),
+                                                save_best_only=True)
+        callbacks.append(save_best)
     else:
         callbacks = None
     history = network.fit(data, labels, batch_size=batch_size,
@@ -30,6 +35,4 @@ def train_model(network, data, labels, batch_size,
                           callbacks=callbacks, shuffle=shuffle,
                           validation_data=validation_data)
     val_losses = history.history['val_loss']
-    if val_losses[-1] == min(val_losses) and save_best:
-        model.save(filepath)
     return history
