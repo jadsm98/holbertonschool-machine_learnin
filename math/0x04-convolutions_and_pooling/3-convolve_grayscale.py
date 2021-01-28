@@ -26,16 +26,16 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     padded_images = np.pad(
         images,
         [(0, 0), (ph, ph), (pw, pw)]
-        )
-   (m, h, w) = padded_images.shape
-   output_shape = (m, int(((h - kh) / sh) + 1), int(((w - kw) / sw) + 1))
-   output = np.zeros(output_shape)
-   for row in range(output_shape[1]):
-       for column in range(output_shape[2]):
-           sub_matrix = padded_images[
-               :,
-               (row * sh): (row * sh) + kh,
-               (column * sw): (column * sw) + kw
-           ]
-           output[:, row, column] = (sub_matrix * kernel).sum(axis=(1, 2))
+    )
+    (m, h, w) = padded_images.shape
+    output_shape = (m, int(((h - kh) / sh) + 1), int(((w - kw) / sw) + 1))
+    output = np.zeros(output_shape)
+    for row in range(output_shape[1]):
+        for column in range(output_shape[2]):
+            sub_matrix = padded_images[
+                :,
+                (row * sh): (row * sh) + kh,
+                (column * sw): (column * sw) + kw
+            ]
+            output[:, row, column] = (sub_matrix * kernel).sum(axis=(1, 2))
     return output
