@@ -11,8 +11,8 @@ def convolve_grayscale_valid(images, kernel):
     in_w = images.shape[2]
     k_h = kernel.shape[0]
     k_w = kernel.shape[1]
-    out_h = ceil(in_h - k_h + 1)
-    out_w = ceil(in_w - k_w + 1)
+    out_h = int(ceil(float(in_h - k_h + 1)))
+    out_w = int(ceil(float(in_w - k_w + 1)))
     output = np.zeros((images.shape[0], out_h, out_w))
     for x in range(out_w):
         for y in range(out_h):
