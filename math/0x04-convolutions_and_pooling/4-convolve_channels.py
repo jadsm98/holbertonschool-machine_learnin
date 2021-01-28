@@ -11,18 +11,18 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     kh, kw = kernel.shape[0], kernel.shape[1]
     sh, sw = stride
     if padding == 'valid':
-        out_h = (h - kh) // sh + 1
-        out_w = (w - kw) // sw + 1
+        out_h = int(np.ceil((h - kh + 1) / sh))
+        out_w = int(np.ceil((w - kw + 1) / sw))
     elif padding == 'same':
-        ph = ((h - 1) * sh + kh - h) // 2 + 1
-        pw = ((w - 1) * sw + kw - w) // 2 + 1
-        out_h = (h + 2*ph - kh) // sh + 1
-        out_w = (w + 2*pw - kw) // sw + 1
+        ph = int(np.ceil(((h - 1) * sh + kh - h + 1) / 2))
+        pw = int(np.ceil(((w - 1) * sw + kw - w + 1) / 2))
+        out_h = int(np.ceil((h + 2*ph - kh + 1) / sh))
+        out_w = int(np.ceil((w + 2*pw - kw + 1) / sw))
         im_padded = np.pad(images, [(0, 0), (ph, ph), (pw, pw), (0, 0)])
     else:
         ph, pw = padding
-        out_h = (h + 2*ph - kh) // sh + 1
-        out_w = (w + 2*pw - kw) // sw + 1
+        out_h = int(np.ceil((h + 2*ph - kh + 1) / sh))
+        out_w = int(np.ceil((w + 2*pw - kw + 1) / sw))
         im_padded = np.pad(images, [(0, 0), (ph, ph), (pw, pw), (0, 0)])
     output = np.zeros((m, out_h, out_w))
     for i in range(out_h):
