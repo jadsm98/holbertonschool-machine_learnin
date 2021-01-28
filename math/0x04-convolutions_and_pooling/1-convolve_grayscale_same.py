@@ -3,6 +3,7 @@
 
 
 import numpy as np
+from math import ceil
 
 
 def convolve_grayscale_same(images, kernel):
@@ -12,8 +13,8 @@ def convolve_grayscale_same(images, kernel):
     in_w = images.shape[2]
     k_h = kernel.shape[0]
     k_w = kernel.shape[1]
-    out_h = in_h
-    out_w = in_w
+    out_h = int(ceil(float(in_h)))
+    out_w = int(ceil(float(in_w)))
     output = np.zeros((images.shape[0], out_h, out_w))
     pad_h = max((out_h - 1) + k_h - in_h, 0)
     pad_w = max((out_w - 1) + k_w - in_w, 0)
