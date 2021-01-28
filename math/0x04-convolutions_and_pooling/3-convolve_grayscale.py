@@ -1,41 +1,39 @@
 #!/usr/bin/env python3
+"""module"""
 
-"""
-performs a convolution on images with channels
-"""
 
 import numpy as np
+from math import ceil
 
 
 def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
-    """
-    Returns: a numpy.ndarray containing the convolved images
-    """
-    kh, kw = kernel.shape
-    sh, sw = stride
-    if padding in ('same', 'valid'):
-        if padding == 'same':
-            (m, h, w) = images.shape
-            pw = int(np.ceil((((w - 1) * sw) + kw - w) / 2))
-            ph = int(np.ceil((((h - 1) * sh) + kh - h) / 2))
-        else:
-            (ph, pw) = (0, 0)
+    """function"""
+    m, in_h, in_w, = images.shape
+    k_h, k_w = kernel.shape
+    if padding == 'valid':
+        out_h = (in_h - k_h + 1) // stride[0]
+        out_w = (in_w - k_w + 1) // stride[1]
+    elif padding == 'same':
+        out_h = int(ceil(in_h / stride[0]))
+        out_w = int(ceil(in_w / stride[1]))
+        p_h = ((out_h - 1) * stride[0] + k_h - in_h) // 2
+        p_w = ((out_w - 1) * stride[1] + k_w - in_w) // 2
+        image_padded = np.pad(images, [(0, 0), (p_h, p_h),
+                                       (p_w, p_w)])
     else:
-        (ph, pw) = padding
-
-    padded_images = np.pad(
-        images,
-        [(0, 0), (ph, ph), (pw, pw)]
-    )
-    (m, h, w) = padded_images.shape
-    output_shape = (m, int(((h - kh) / sh) + 1), int(((w - kw) / sw) + 1))
-    output = np.zeros(output_shape)
-    for row in range(output_shape[1]):
-        for column in range(output_shape[2]):
-            sub_matrix = padded_images[
-                :,
-                (row * sh): (row * sh) + kh,
-                (column * sw): (column * sw) + kw
-            ]
-            output[:, row, column] = (sub_matrix * kernel).sum(axis=(1, 2))
+        p_h, p_w = padding
+        out_w = (in_w - k_w + 2 * p_w + 1) // stride[1]
+        out_h = (in_h - k_h + 2 * p_h + 1) // stride[0]
+        image_padded = np.pad(images, [(0, 0), (p_h, p_h),
+                                       (p_w, p_w)])
+    output = np.zeros((m, out_h, out_w))
+    for i in range(out_h):
+        for j in range(out_w):
+            j_s = j * stride[1]
+            i_s = i * stride[0]
+            if padding == 'valid':
+                im_slice = images[:, i_s: i_s + k_h, j_s: j_s + k_w]
+            else:
+                im_slice = image_padded[:, i_s: i_s + k_h, j_s: j_s + k_w]
+            output[:, i, j] = np.sum(kernel * im_slice, axis=(1, 2))
     return output
