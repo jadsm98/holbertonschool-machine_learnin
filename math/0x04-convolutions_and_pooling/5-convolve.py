@@ -18,7 +18,7 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
         ph = int(np.ceil(((h - 1) * sh + kh - h + 1) / 2))
         pw = int(np.ceil(((w - 1) * sw + kw - w + 1) / 2))
         out_h = int(np.ceil((h + 2*ph - kh + 1) / sh))
-        out_w = int(np.ceil((w + 2*pw - kw + 1) / sw)) 
+        out_w = int(np.ceil((w + 2*pw - kw + 1) / sw))
         im_padded = np.pad(images, ((0, 0), (ph, ph),
                                     (pw, pw), (0, 0)))
     else:
