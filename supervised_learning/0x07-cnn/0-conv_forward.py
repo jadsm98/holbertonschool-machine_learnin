@@ -15,7 +15,7 @@ def conv_forward(A_prev, W, b, activation, padding="same",
     if padding == 'valid':
         h_new = int(np.floor(((h_prev - kh)/sh) + 1))
         w_new = int(np.floor(((w_prev - kw)/sw) + 1))
-        A_padded = A_prev
+        A_padded = A_prev[:, :, :, :]
     else:
         ph = int(np.ceil(((h_prev - 1)*sh + kh - h_prev + 1)/2))
         pw = int(np.ceil(((w_prev - 1)*sw + kw - w_prev + 1)/2))
