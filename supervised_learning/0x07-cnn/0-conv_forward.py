@@ -29,5 +29,6 @@ def conv_forward(A_prev, W, b, activation, padding="same",
                 sliced = A_padded[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :]
                 output[:, i, j, k] = np.sum(sliced*W[:, :, :, k],
                                             axis=(1, 2, 3))
-        output[:, :, :, k] = activation(output + b)
+        output[:, :, :, k] = activation(output [:, :, :, k] +
+                                        b[:, :, :, k])
     return output
