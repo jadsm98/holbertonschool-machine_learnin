@@ -15,6 +15,7 @@ def conv_forward(A_prev, W, b, activation, padding="same",
     if padding == 'valid':
         h_new = int(np.floor(((h_prev - kh)/sh) + 1))
         w_new = int(np.floor(((w_prev - kw)/sw) + 1))
+        A_padded = A_prev
     else:
         ph = int(np.ceil(((h_prev - 1)*sh + kh - h_prev + 1)/2))
         pw = int(np.ceil(((w_prev - 1)*sw + kw - w_prev + 1)/2))
@@ -25,9 +26,8 @@ def conv_forward(A_prev, W, b, activation, padding="same",
     for k in range(c_new):
         for i in range(h_new):
             for j in range(w_new):
-                if padding == 'valid':
-                    slice = A_prev[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :]
-                else:
-                    slice = A_padded[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :]
-                output[:, i, j, k] = np.sum(activation(slice*W[:, :, :, k] + b), axis=(1, 2, 3))
+                sliced = A_padded[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :]
+                output[:, i, j, k] = np.sum(sliced*W[:, :, :, k],
+                                            axis=(1, 2, 3))
+                output = activation(output + b)
     return output
