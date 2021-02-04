@@ -7,19 +7,21 @@ import tensorflow as tf
 
 def lenet5(x, y):
     """function"""
+    relu = tf.nn.relu
+    softmax = tf.nn.softmax
     weights = tf.contrib.layers.variance_scaling_initializer()
     conv1 = tf.layers.Conv2D(6, kernel_size=5, padding='same',
-                             activation='relu', kernel_initializer=weights)
+                             activation=relu, kernel_initializer=weights)
     pool1 = tf.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2))
     conv2 = tf.layers.Conv2D(16, kernel_size=5, padding='valid',
-                             activation='relu', kernel_initializer=weights)
+                             activation=relu, kernel_initializer=weights)
     pool2 = tf.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2))
     flatten = tf.layers.Flatten()
-    dense1 = tf.layers.Dense(120, activation='relu',
+    dense1 = tf.layers.Dense(120, activation=relu,
                              kernel_initializer=weights)
-    dense2 = tf.layers.Dense(84, activation='relu',
+    dense2 = tf.layers.Dense(84, activation=relu,
                              kernel_initializer=weights)
-    dense3 = tf.layers.Dense(10, activation='softmax',
+    dense3 = tf.layers.Dense(10, activation=softmax,
                              kernel_initializer=weights)
     y_pred = dense3(dense2(dense1(flatten(pool2(conv2(pool1(conv1(x))))))))
 
