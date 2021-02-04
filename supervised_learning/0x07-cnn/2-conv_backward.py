@@ -17,9 +17,9 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         A_padded = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)))
     else:
         A_padded = A_prev[:, :, :, :]
-        dA_prev = np.zeros(A_padded.shape)
-        dW = np.zeros(W.shape)
-        db = np.zeros(b.shape)
+    dA_prev = np.zeros(A_padded.shape)
+    dW = np.zeros(W.shape)
+    db = np.zeros(b.shape)
     for k in range(c_new):
         for i in range(h_new):
             for j in range(w_new):
