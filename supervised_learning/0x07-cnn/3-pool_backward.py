@@ -20,9 +20,9 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
                         A_prev_sliced = A_prev[n, i*sh: i*sh + kh,
                                                j*sw: j*sw + kw, k]
                         position = (A_prev_sliced == np.max(A_prev_sliced))
-                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] = \
+                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] += \
                             position*dA[n, i, j, k]
                     else:
-                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] = \
+                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] += \
                             dA[n, i, j, k]/(kh*kw)
     return dA_prev
