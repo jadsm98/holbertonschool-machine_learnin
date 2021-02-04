@@ -12,16 +12,17 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
     sh, sw = stride
     h_new, w_new, c_new = dA.shape[1:]
     dA_prev = np.zeros(A_prev.shape)
-    for i in range(h_new):
-        for j in range(w_new):
-            A_prev_sliced = A_prev[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :]
-            if mode == 'max':
-                maximum = np.max(A_prev_sliced,
-                                 axis=(1, 2)).reshape(10, 1, 1, 2)
-                position = (A_prev_sliced == maximum)
-                dA_prev[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :] = \
-                    position*dA[:, i, j, :].reshape(10, 1, 1, 2)
-            else:
-                dA_prev[:, i*sh: i*sh + kh, j*sw: j*sw + kw, :] = \
-                    dA[:, i, j, :]/(kh*kw).reshape(10, 1, 1, 2)
+    for n in range(m):
+        for k in range(c_new):
+            for i in range(h_new):
+                for j in range(w_new):
+                    if mode == 'max':
+                        A_prev_sliced = A_prev[n, i*sh: i*sh + kh,
+                                               j*sw: j*sw + kw, k]
+                        position = (A_prev_sliced == np.max(A_prev_sliced))
+                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] = \
+                            position*dA[n, i, j, k]
+                    else:
+                        dA_prev[n, i*sh: i*sh + kh, j*sw: j*sw + kw, k] = \
+                            dA[n, i, j, k]/(kh*kw)
     return dA_prev
