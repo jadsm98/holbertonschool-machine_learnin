@@ -30,5 +30,5 @@ def lenet5(x, y):
     equality = tf.math.equal(prediction, correct)
     accuracy = tf.math.reduce_mean(tf.cast(equality, tf.float32))
 
-    train_op = tf.train.Adam().minimize(loss)
+    train_op = tf.train.AdamOptimizer().minimize(loss)
     return y_pred, train_op, loss, accuracy
