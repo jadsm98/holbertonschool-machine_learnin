@@ -17,17 +17,11 @@ def conv_forward(A_prev, W, b, activation, padding="same",
         w_new = int(np.ceil((w_prev - kw + 1)/sw))
         A_padded = A_prev[:, :, :, :]
     elif padding == 'same':
-        ph = int(np.ceil(((h_prev - 1)*sh + kh - h_prev + 1)/2))
-        pw = int(np.ceil(((w_prev - 1)*sw + kw - w_prev + 1)/2))
+        ph = int(np.ceil(((h_prev - 1)*sh + kh - h_prev)/2))
+        pw = int(np.ceil(((w_prev - 1)*sw + kw - w_prev)/2))
         h_new = int(np.ceil(((h_prev + 2*ph - kh + 1)/sh)))
         w_new = int(np.ceil(((w_prev + 2*pw - kw + 1)/sw)))
         A_padded = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)))
-    else:
-        ph, pw = padding
-        h_new = int(np.ceil((h_prev + 2*ph - kh + 1) / sh))
-        w_new = int(np.ceil((w_prev + 2*pw - kw + 1) / sw))
-        A_padded = np.pad(A_prev, ((0, 0), (ph, ph),
-                                   (pw, pw), (0, 0)))
     output = np.zeros((m, h_new, w_new, c_new))
     for k in range(c_new):
         for i in range(h_new):
