@@ -8,7 +8,6 @@ import tensorflow as tf
 def lenet5(x, y):
     """function"""
     relu = tf.nn.relu
-    softmax = tf.nn.softmax
     weights = tf.contrib.layers.variance_scaling_initializer()
     conv1 = tf.layers.Conv2D(6, kernel_size=5, padding='same',
                              activation=relu, kernel_initializer=weights)
@@ -21,8 +20,7 @@ def lenet5(x, y):
                              kernel_initializer=weights)
     dense2 = tf.layers.Dense(84, activation=relu,
                              kernel_initializer=weights)
-    dense3 = tf.layers.Dense(10, activation=softmax,
-                             kernel_initializer=weights)
+    dense3 = tf.layers.Dense(10, kernel_initializer=weights)
     y_pred = dense3(dense2(dense1(flatten(pool2(conv2(pool1(conv1(x))))))))
 
     loss = tf.losses.softmax_cross_entropy(y, y_pred)
@@ -33,4 +31,4 @@ def lenet5(x, y):
     accuracy = tf.math.reduce_mean(tf.cast(equality, tf.float32))
 
     train_op = tf.train.AdamOptimizer().minimize(loss)
-    return y_pred, train_op, loss, accuracy
+    return tf.nn.softmax(y_pred), train_op, loss, accuracy
