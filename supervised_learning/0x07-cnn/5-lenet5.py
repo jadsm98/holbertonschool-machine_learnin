@@ -5,12 +5,12 @@
 import tensorflow.keras as K
 
 
-def lenet5(X):
+def lenet5(x):
     """function"""
     weights = K.initializers.he_normal()
     conv1 = K.layers.Conv2D(6, kernel_size=5, padding='same',
                             activation='relu',
-                            kernel_initializer=weights)(X)
+                            kernel_initializer=weights)(x)
     pool1 = K.layers.MaxPooling2D(pool_size=(2, 2),
                                   strides=(2, 2))(conv1)
     conv2 = K.layers.Conv2D(16, kernel_size=5, padding='valid',
