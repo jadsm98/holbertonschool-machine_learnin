@@ -9,6 +9,7 @@ def dense_block(X, nb_filters, growth_rate, layers):
     """function"""
     w = K.initializers.he_normal()
     output = [X]
+    out_filter = nb_filters
     for i in range(layers):
         BN1 = K.layers.BatchNormalization()(X)
         act1 = K.layers.Activation('relu')(BN1)
@@ -21,4 +22,5 @@ def dense_block(X, nb_filters, growth_rate, layers):
         concat = K.layers.Concatenate()([X, conv2])
         output.append(concat)
         X = concat
-    return output, output[-1].shape[-1]
+        out_filter += growth_rate
+    return output, out_filter
