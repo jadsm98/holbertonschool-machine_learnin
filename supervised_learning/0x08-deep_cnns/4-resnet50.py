@@ -9,11 +9,9 @@ projection_block = __import__('3-projection_block').projection_block
 
 def resnet50():
     """function"""
-    weights = K.initializers.he_normal()
     X = K.Input(shape=(224, 224, 3))
     conv1 = K.layers.Conv2D(64, kernel_size=7, activation='relu',
-                            strides=(2, 2), kernel_initializer=weights,
-                            padding='same')(X)
+                            strides=(2, 2), padding='same')(X)
     BN = K.layers.BatchNormalization()(conv1)
     act = K.layers.Activation('relu')(BN)
     maxpool = K.layers.MaxPool2D(pool_size=(3, 3), padding='same',
@@ -39,7 +37,6 @@ def resnet50():
     id_block13 = identity_block(id_block12, [512, 512, 2048])
 
     avgepool = K.layers.AvgPool2D(pool_size=(7, 7), strides=(1, 1))(id_block13)
-    soft = K.layers.Dense(1000, activation='softmax',
-                          kernel_initializer=weights)(avgepool)
+    soft = K.layers.Dense(1000, activation='softmax')(avgepool)
     model = K.Model(inputs=X, outputs=soft)
     return model
