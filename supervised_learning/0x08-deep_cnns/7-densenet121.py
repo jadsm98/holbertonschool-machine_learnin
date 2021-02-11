@@ -24,7 +24,8 @@ def densenet121(growth_rate=32, compression=1.0):
     dense3 = dense_block(trans2[0], trans2[1], growth_rate, 24)
     trans3 = transition_layer(dense3[0][-1], dense3[1], compression)
     dense4 = dense_block(trans3[0], trans3[1], growth_rate, 16)
-    avgepool = K.layers.AvgPool2D(pool_size=(7, 7), strides=(1, 1))(dense4[0][-1])
+    avgepool = K.layers.AvgPool2D(pool_size=(7, 7),
+                                  strides=(1, 1))(dense4[0][-1])
     soft = K.layers.Dense(1000, activation='softmax',
                           kernel_initializer=w)(avgepool)
     model = K.Model(inputs=X, outputs=soft)
