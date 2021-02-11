@@ -12,5 +12,6 @@ def transition_layer(X, nb_filters, compression):
     act = K.layers.Activation('relu')(BN)
     conv = K.layers.Conv2D(int(compression*nb_filters), kernel_size=1,
                            kernel_initializer=w)(act)
-    avgepool = K.layers.AvgPool2D(pool_size=(2, 2), padding='same')(conv)
+    avgepool = K.layers.AvgPool2D(pool_size=(2, 2), strides=(2, 2),
+                                  padding='same')(conv)
     return avgepool, avgepool.shape[-1]
