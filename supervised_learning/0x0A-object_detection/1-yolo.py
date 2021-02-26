@@ -4,13 +4,6 @@
 
 import tensorflow.keras as K
 import numpy as np
-import cv2
-import glob
-
-
-def sig(x):
-    """sigmoid"""
-    return 1/(1 + np.exp(-x))
 
 
 class Yolo:
@@ -24,6 +17,11 @@ class Yolo:
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
+
+    
+    def sig(self, X):
+        """function"""
+        return 1/(1 + np.exp(-X))
 
     def process_outputs(self, outputs, image_size):
         """method"""
@@ -44,11 +42,11 @@ class Yolo:
                         ph = self.anchors[i, a, 1]
                         tx, ty, tw, th = outputs[i][h, w, a, :4]
                         cx, cy = w, h
-                        bx, by = (sig(tx) + cx)/gw, (sig(ty) + cy)/gh
+                        bx, by = (self.sig(tx) + cx)/gw, (self.sig(ty) + cy)/gh
                         bw, bh = pw*np.exp(tw)/self.model.input.shape[1],\
                             ph*np.exp(th)/self.model.input.shape[2]
                         x1, y1, x2, y2 = bx - bw/2, by - bh/2, bx + bw/2, by + bh/2
                         boxes[i][h, w, a, :] = x1*im_w, y1*im_h, x2*im_w, y2*im_h
-                        box_class_prob[i][h, w, a, :] = sig(outputs[i][h, w, a, 5:])
-                        box_confidence[i][h, w, a, :] = sig(outputs[i][h, w, a, 4])
+                        box_class_prob[i][h, w, a, :] = self.sig(outputs[i][h, w, a, 5:])
+                        box_confidence[i][h, w, a, :] = self.sig(outputs[i][h, w, a, 4])
         return boxes, box_confidence, box_class_prob
