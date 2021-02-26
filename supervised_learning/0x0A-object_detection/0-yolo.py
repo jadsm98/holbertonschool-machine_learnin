@@ -4,13 +4,6 @@
 
 import tensorflow.keras as K
 import numpy as np
-import cv2
-import glob
-
-
-def sig(x):
-    """sigmoid"""
-    return 1/(1 + np.exp(-x))
 
 
 class Yolo:
