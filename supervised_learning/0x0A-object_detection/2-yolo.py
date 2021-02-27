@@ -37,20 +37,22 @@ class Yolo:
             boxes.append(np.zeros((gh, gw, na, 4)))
             box_confidence.append(np.zeros((gh, gw, na, 1)))
             box_class_prob.append(np.zeros((gh, gw, na, c - 5)))
-            for h in range(gh):
-                for w in range(gw):
-                    for a in range(na):
-                        pw = self.anchors[i, a, 0]
-                        ph = self.anchors[i, a, 1]
-                        tx, ty, tw, th = outputs[i][h, w, a, :4]
-                        cx, cy = w, h
-                        bx, by = (sig(tx) + cx)/gw, (sig(ty) + cy)/gh
-                        bw, bh = pw*np.exp(tw)/self.model.input.shape[1],\
-                            ph*np.exp(th)/self.model.input.shape[2]
-                        x1, y1, x2, y2 = bx - bw/2, by - bh/2, bx + bw/2, by + bh/2
-                        boxes[i][h, w, a, :] = x1*im_w, y1*im_h, x2*im_w, y2*im_h
-                        box_class_prob[i][h, w, a, :] = sig(outputs[i][h, w, a, 5:])
-                        box_confidence[i][h, w, a, :] = sig(outputs[i][h, w, a, 4])
+            pw = self.anchors[i, :, 0]
+            ph = self.anchors[i, :, 1]
+            tx, ty = outputs[i][..., 0], outputs[i][..., 1]
+            tw, th = outputs[i][..., 2], outputs[i][..., 3]
+            cx, cy = np.arange(gw).reshape(1, gw, 1),\
+                     np.arange(gh).reshape(gh, 1, 1)
+            bx, by = (self.sig(tx) + cx)/gw, (self.sig(ty) + cy)/gh
+            bw, bh = pw*np.exp(tw)/self.model.input.shape[1].value,\
+                     ph*np.exp(th)/self.model.input.shape[2].value
+            x1, y1, x2, y2 = bx - bw/2, by - bh/2, bx + bw/2, by + bh/2
+            boxes[i][..., 0] = x1*im_w
+            boxes[i][..., 1] = y1*im_h
+            boxes[i][..., 2] = x2*im_w
+            boxes[i][..., 3] = y2*im_h
+            box_class_prob[i] = self.sig(outputs[i][..., 5:])
+            box_confidence[i] = self.sig(outputs[i][..., 4, np.newaxis])
         return boxes, box_confidence, box_class_prob
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
