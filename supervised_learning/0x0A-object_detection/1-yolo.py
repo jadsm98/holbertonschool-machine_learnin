@@ -39,10 +39,10 @@ class Yolo:
             tx, ty = outputs[i][..., 0], outputs[i][..., 1]
             tw, th = outputs[i][..., 2], outputs[i][..., 3]
             cx, cy = np.arange(gw).reshape(1, gw, 1),\
-                np.arange(gh).reshape(gh, 1, 1)
+                     np.arange(gh).reshape(gh, 1, 1)
             bx, by = (self.sig(tx) + cx)/gw, (self.sig(ty) + cy)/gh
             bw, bh = pw*np.exp(tw)/self.model.input.shape[1].value,\
-                ph*np.exp(th)/self.model.input.shape[2].value
+                     ph*np.exp(th)/self.model.input.shape[2].value
             x1, y1, x2, y2 = bx - bw/2, by - bh/2, bx + bw/2, by + bh/2
             boxes[i][..., 0] = x1*im_w
             boxes[i][..., 1] = y1*im_h
