@@ -34,7 +34,6 @@ class Yolo:
             boxes.append(np.zeros((gh, gw, na, 4)))
             box_confidence.append(np.zeros((gh, gw, na, 1)))
             box_class_prob.append(np.zeros((gh, gw, na, c - 5)))
-
             pw = self.anchors[i, :, 0]
             ph = self.anchors[i, :, 1]
             tx, ty = outputs[i][..., 0], outputs[i][..., 1]
@@ -50,5 +49,5 @@ class Yolo:
             boxes[i][..., 2] = x2*im_w
             boxes[i][..., 3] = y2*im_h
             box_class_prob[i] = self.sig(outputs[i][..., 5:])
-            box_confidence[i] = self.sig(outputs[i][..., 4])
+            box_confidence[i] = self.sig(outputs[i][..., 4, np.newaxis])
         return boxes, box_confidence, box_class_prob
