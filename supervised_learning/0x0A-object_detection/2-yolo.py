@@ -59,16 +59,23 @@ class Yolo:
         """method"""
         box = []
         classes = []
-        scores =[]
+        scores = []
         for i in range(len(boxes)):
+            gh, gw, na, _ = boxes[i].shape
             boxScore = box_confidences[i] * box_class_probs[i]
             boxClass = np.argmax(boxScore, axis=-1).reshape(-1)
             boxScore = np.max(boxScore, axis=-1).reshape(-1)
-            mask = np.where(boxScore >= self.class_t)
-            box.append(boxes[i][mask])
-            scores.append(boxScore[mask])
-            classes.append(boxClass[mask])
-        box = np.concatenate(box, axis=0)
-        classes = np.concatenate(classes, axis=None)
-        scores = np.concatenate(scores, axis=None)
-        return box, classes, scores
+            mask = np.where(boxScore >= self.class_t, 1, 0)
+            boxScore = boxScore * mask
+            boxClass = boxClass * mask
+            boxi = np.multiply(boxes[i].reshape(-1, 4), mask.reshape(-1, 1))
+            boxi = boxi[boxi != 0]
+            boxClass = boxClass[boxClass != 0]
+            boxScore = boxScore[boxScore != 0]
+            box.append(boxi)
+            classes.append(boxClass)
+            scores.append(boxScore)
+        filtered_boxes = np.concatenate(box).reshape(-1, 4)
+        box_classes = np.concatenate(classes)
+        box_scores = np.concatenate(scores)
+        return filtered_boxes, box_classes, box_scores
