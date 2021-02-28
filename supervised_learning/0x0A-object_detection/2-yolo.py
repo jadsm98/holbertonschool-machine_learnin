@@ -18,11 +18,11 @@ class Yolo:
         self.nms_t = nms_t
         self.anchors = anchors
 
-        def sig(self, x):
-            """sigmoid"""
-            return 1/(1 + np.exp(-x))
+    def sig(self, x):
+        """sigmoid"""
+        return 1/(1 + np.exp(-x))
         
-        def process_outputs(self, outputs, image_size):
+    def process_outputs(self, outputs, image_size):
         """method"""
         im_h = image_size[0]
         im_w = image_size[1]
