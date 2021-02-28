@@ -119,9 +119,8 @@ class Yolo:
             im_shape.append(im.shape[0:2])
             resized = cv2.resize(im, (new_width, new_height),
                                  interpolation=cv2.INTER_CUBIC)
-            rescaled = (resized/255).reshape(1,new_width, new_height, 3)
+            rescaled = resized/255
             new_im.append(rescaled)
-        n_im = len(images)
-        pimage = np.concatenate(new_im)
-        image_shape = np.concatenate(im_shape).reshape(n_im, 2)
+        pimage = np.array(new_im)
+        image_shape = np.array(im_shape)
         return pimage, image_shape
