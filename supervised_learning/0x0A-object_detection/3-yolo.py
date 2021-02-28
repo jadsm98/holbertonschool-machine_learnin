@@ -72,25 +72,26 @@ class Yolo:
 
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """method"""
-        filtered_box = []
-        filtered_classes = []
-        filtered_scores = []
+        box_filt = []
+        classes_filt = []
+        scores_filt = []
         for uniq in np.unique(box_classes):
-            cl = np.where(uniq == box_classes)
-            box = filtered_boxes[cl]
-            classes = box_classes[cl]
-            scores = box_scores[cl]
+            i = np.where(uniq == box_classes)
+            box = filtered_boxes[i]
+            classes = box_classes[i]
+            scores = box_scores[i]
 
-            pick = []
             x1, y1, x2, y2 = box[:, 0], box[:, 1],\
                 box[:, 2], box[:, 3]
             area = (x2 - x1 + 1)*(y2 - y1 + 1)
             idxs = scores.argsort()[::-1]
-            while idxs.size > 0:
+
+            pick = []
+            while len(idxs) > 0:
                 i = idxs[0]
                 pick.append(i)
                 xx1 = np.maximum(x1[i], x1[idxs[1:]])
-                yy1 = np.maximum(y1[i], y2[idxs[1:]])
+                yy1 = np.maximum(y1[i], y1[idxs[1:]])
                 xx2 = np.minimum(x2[i], x2[idxs[1:]])
                 yy2 = np.minimum(y2[i], y2[idxs[1:]])
 
@@ -98,10 +99,11 @@ class Yolo:
                 h = np.maximum(0, yy2 - yy1 + 1)
                 overlap = (w*h)/(area[i] + area[idxs[1:]] - w*h)
                 idxs = idxs[np.where(overlap <= self.nms_t)[0] + 1]
-            filtered_box.append(box[pick])
-            filtered_classes.append(classes[pick])
-            filtered_scores.append(scores[pick])
-        filtered_box = np.concatenate(filtered_boxes)
-        filtered_classes = np.concatenate(filtered_classes)
-        filtered_scores = np.concatenate(filtered_scores)
-        return filtered_box, filtered_classes, filtered_scores
+
+            box_filt.append(box[pick])
+            classes_filt.append(classes[pick])
+            scores_filt.append(scores[pick])
+        box_pred = np.concatenate(box_filt)
+        classes_pred = np.concatenate(classes_filt)
+        score_pred = np.concatenate(scores_filt)
+        return box_pred, classes_pred, score_pred
