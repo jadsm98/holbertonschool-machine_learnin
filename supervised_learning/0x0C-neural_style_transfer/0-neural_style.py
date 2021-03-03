@@ -19,9 +19,9 @@ class NST:
             raise TypeError('style_image must be a numpy.ndarray with shape (h, w, 3)')
         if not isinstance(content_image, np.ndarray) or content_image.ndim != 3:
             raise TypeError('content_image must be a numpy.ndarray with shape (h, w, 3)')
-        if alpha < 0:
+        if alpha < 0 or not alpha in [float, int]:
             raise TypeError('alpha must be a non-negative number')
-        if beta < 0:
+        if beta < 0 or not beta in [float, int]:
             raise TypeError('beta must be a non-negative number')
         tf.executing_eagerly()
         self.style_image = self.scale_image(style_image)
@@ -44,4 +44,5 @@ class NST:
         h_new, w_new = new_size
         reshape = tf.reshape(resized, (1, h_new, w_new, 3))
         scaled = tf.divide(reshape, 255)
+        scaled = tf.clip_by_value(scaled, 0., 1.)
         return scaled
