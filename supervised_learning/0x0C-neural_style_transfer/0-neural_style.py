@@ -29,9 +29,9 @@ class NST:
         self.alpha = alpha
         self.beta = beta
 
-        @staticmethod
-        def scale_image(image):
-            """method"""
+    @staticmethod
+    def scale_image(image):
+        """method"""
         if not isinstance(image, np.ndarray) or image.ndim != 3:
             raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
         h, w, _ = image.shape
