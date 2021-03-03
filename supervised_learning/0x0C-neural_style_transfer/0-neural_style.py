@@ -28,3 +28,20 @@ class NST:
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
         self.beta = beta
+
+        @staticmethod
+        def scale_image(image):
+            """method"""
+        if not isinstance(image, np.ndarray) or image.ndim != 3:
+            raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
+        h, w, _ = image.shape
+        if h == max(h, w):
+            new_size = (512, int(512*w/h))
+        else:
+            new_size = (int(512*h/w), 512)
+        inter = tf.image.ResizeMethod.BICUBIC
+        resized = tf.image.resize(image, new_size, method=inter)
+        h_new, w_new = new_size
+        reshape = tf.reshape(resized, (1, h_new, w_new, 3))
+        scaled = tf.divide(reshape, 255)
+        return scaled
