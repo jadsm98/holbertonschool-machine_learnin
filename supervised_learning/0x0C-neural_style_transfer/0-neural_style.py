@@ -15,15 +15,17 @@ class NST:
 
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
         """constructor"""
-        if not isinstance(style_image, np.ndarray) or style_image.ndim != 3:
+        if not isinstance(style_image, np.ndarray) or style_image.ndim != 3 or \
+           style_image.shape[-1] != 3:
             raise TypeError('style_image must be a numpy.ndarray with shape (h, w, 3)')
-        if not isinstance(content_image, np.ndarray) or content_image.ndim != 3:
+        if not isinstance(content_image, np.ndarray) or content_image.ndim != 3 or \
+           content_image.shape[-1] != 3:
             raise TypeError('content_image must be a numpy.ndarray with shape (h, w, 3)')
-        if alpha < 0 or not alpha in [float, int]:
+        if alpha < 0 or not type(alpha) in [float, int]:
             raise TypeError('alpha must be a non-negative number')
-        if beta < 0 or not beta in [float, int]:
+        if beta < 0 or not type(beta) in [float, int]:
             raise TypeError('beta must be a non-negative number')
-        tf.executing_eagerly()
+        tf.enable_eager_execution()
         self.style_image = self.scale_image(style_image)
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
@@ -32,7 +34,8 @@ class NST:
     @staticmethod
     def scale_image(image):
         """method"""
-        if not isinstance(image, np.ndarray) or image.ndim != 3:
+        if not isinstance(image, np.ndarray) or image.ndim != 3 or \
+           image.shape[-1] != 3:
             raise TypeError('image must be a numpy.ndarray with shape (h, w, 3)')
         h, w, _ = image.shape
         if h == max(h, w):
