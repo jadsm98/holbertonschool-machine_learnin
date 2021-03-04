@@ -43,9 +43,8 @@ class NST:
         else:
             new_size = (int(512*h/w), 512)
         inter = tf.image.ResizeMethod.BICUBIC
-        resized = tf.image.resize(image, new_size, method=inter)
-        h_new, w_new = new_size
-        reshape = tf.reshape(resized, (1, h_new, w_new, 3))
-        scaled = tf.divide(reshape, 255)
+        reshape = tf.expand_dims(image, 0)
+        resized = tf.image.resize(reshape, new_size, method=inter)
+        scaled = tf.divide(resized, 255)
         scaled = tf.clip_by_value(scaled, 0., 1.)
         return scaled
