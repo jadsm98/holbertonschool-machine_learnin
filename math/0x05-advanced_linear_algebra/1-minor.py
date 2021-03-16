@@ -19,11 +19,11 @@ def minor(matrix):
         for col in range(len(matrix[0])):
             M_rec = matrix.copy()
             M_rec = M_rec[:row] + M_rec[row+1:]
-        for i in range(len(M_rec)):
-            M_rec[i] = M_rec[i][:col] + M_rec[i][col+1:]
-        if len(M_rec) == 1:
-            new[row][col] = M_rec[0][0]
-        else:
-            det = M_rec[0][0] * M_rec[1][1] - M_rec[0][1] * M_rec[1][0]
-            new[row][col] = det
+            for i in range(len(M_rec)):
+                M_rec[i] = M_rec[i][:col] + M_rec[i][col+1:]
+            if len(M_rec) == 1:
+                new[row][col] = M_rec[0][0]
+            else:
+                det = M_rec[0][0] * M_rec[1][1] - M_rec[0][1] * M_rec[1][0]
+                new[row][col] = det
     return new
