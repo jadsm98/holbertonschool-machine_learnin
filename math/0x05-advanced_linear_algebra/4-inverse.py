@@ -91,9 +91,9 @@ def adjugate(matrix):
 
 def inverse(matrix):
     """function"""
-    if not type(matrix) is list or not any(type(i) is list for i in matrix):
+    if not type(matrix) is list or not all(type(i) is list for i in matrix):
         raise TypeError("matrix must be a list of lists")
-    if not any(len(i) == len(matrix) for i in matrix) or len(matrix) == 0:
+    if not all(len(i) == len(matrix) for i in matrix) or len(matrix) == 0:
         raise ValueError("matrix must be a non-empty square matrix")
     det = determinant(matrix)
     if det == 0:
