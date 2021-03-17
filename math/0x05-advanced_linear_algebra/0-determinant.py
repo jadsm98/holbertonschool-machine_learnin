@@ -6,9 +6,9 @@ def determinant(matrix):
     """function"""
     total = 0
 
-    if not type(matrix) is list or not any(type(i) is list for i in matrix):
+    if not type(matrix) is list or not all(type(i) is list for i in matrix):
         raise TypeError("matrix must be a list of lists")
-    if not any(len(i) == len(matrix) for i in matrix) and len(matrix[0]) != 0:
+    if not all(len(i) == len(matrix) for i in matrix) and len(matrix[0]) != 0:
         raise ValueError("matrix must be a square matrix")
 
     if len(matrix[0]) == 0:
