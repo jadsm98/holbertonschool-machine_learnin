@@ -57,14 +57,16 @@ def minor(matrix):
                 det = determinant(M_rec)
                 new[row][col] = det
     return new
-    
+
+
 def cofactor(matrix):
     """function"""
     if not type(matrix) is list or not any(type(i) is list for i in matrix):
         raise TypeError("matrix must be a list of lists")
     if not any(len(i) == len(matrix) for i in matrix) or len(matrix) == 0:
         raise ValueError("matrix must be a non-empty square matrix")
-    cofac_matrix = [[0 for i in range(len(matrix[0]))] for j in range(len(matrix))]
+    cofac_matrix = [[0 for i in range(len(matrix[0]))]
+                    for j in range(len(matrix))]
     minor_matrix = minor(matrix)
     for i in range(len(minor_matrix)):
         for j in range(len(minor_matrix[0])):
