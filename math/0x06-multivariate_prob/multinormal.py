@@ -19,3 +19,18 @@ class MultiNormal:
         mean = np.mean(data_t, axis=0)
         var = data_t - mean
         self.cov = np.matmul(var.T, var)/(data_t.shape[0] - 1)
+
+    def pdf(self, x):
+        """method"""
+        d = x.shape[0]
+        if not isinstance(x, np.ndarray):
+            raise TypeError("x must be a numpy.ndarray")
+        if x.shape != (d, 1):
+            raise ValueError(f"x must have the shape ({d}, 1)")
+        inv = np.linalg.inv(self.cov)
+        det = np.linalg.det(self.cov)
+        d = self.cov.shape[0]
+        mult1 = np.matmul((x - self.mean).T, inv)
+        mult2 = np.matmul(mult1, (x - self.mean))
+        pdf = (1/((2*np.pi)**(d/2)))*(det**-0.5)*np.exp(-0.5*mult2)
+        return pdf[0][0]
