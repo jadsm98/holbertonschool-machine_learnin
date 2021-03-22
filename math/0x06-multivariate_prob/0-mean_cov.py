@@ -14,4 +14,4 @@ def mean_cov(X):
     mean = np.sum(X, axis=0)/X.shape[0]
     var = X - mean
     cov = np.matmul(var.T, var)/(X.shape[0] - 1)
-    return mean, cov
+    return mean.reshape((1, X.shape[1])), cov
