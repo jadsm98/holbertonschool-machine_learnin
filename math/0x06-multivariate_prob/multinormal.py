@@ -31,5 +31,6 @@ class MultiNormal:
         det = np.linalg.det(self.cov)
         mult1 = np.matmul((x - self.mean).T, inv)
         mult2 = np.matmul(mult1, (x - self.mean))
-        pdf = (1/((2*np.pi)**(d/2)))*(det**-0.5)*np.exp(-0.5*mult2)
+        const = 1/(np.sqrt(np.power(2*np.pi, d) * det)
+        pdf = const*np.exp(-0.5*mult2)
         return pdf[0][0]
