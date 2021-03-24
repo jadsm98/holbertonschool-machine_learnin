@@ -12,5 +12,5 @@ def pca(X, var=0.95):
         if elem/cum_sum[-1] >= var:
             r = i
             break
-    W = V.T[:, :r]
+    W = V.T[:, :r+1]
     return W
