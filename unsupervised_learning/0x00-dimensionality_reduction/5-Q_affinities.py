@@ -11,7 +11,7 @@ def Q_affinities(Y):
     D = np.zeros((n, n))
     for i in range(n):
         for j in range(n):
-            D[i][j] = np.power(np.linalg.norm(X[i,:] - X[j,:]), 2)
+            D[i][j] = np.power(np.linalg.norm(Y[i, :] - Y[j, :]), 2)
     num = 1/(1 + D)
     denum = np.sum(num)
     Q = num/denum
