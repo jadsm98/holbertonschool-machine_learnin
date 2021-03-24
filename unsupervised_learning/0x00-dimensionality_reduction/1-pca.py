@@ -8,5 +8,5 @@ def pca(X, ndim):
     """function"""
     mean = np.mean(X, axis=0)
     _, _, V = np.linalg.svd(mean)
-    W = V.T[:, :ndim+1]
+    W = V.T[:, :ndim]
     return np.matmul(mean, W)
