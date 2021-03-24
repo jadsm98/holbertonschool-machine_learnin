@@ -7,7 +7,7 @@ import numpy as np
 
 def HP(Di, beta):
     """function"""
-    num = np.exp(np.divide(-Di, beta))
+    num = np.exp(np.multiply(-Di, beta))
     denum = np.sum(num)
     Pi = num/denum
     Hi = - np.sum(Pi * np.log2(Pi))
