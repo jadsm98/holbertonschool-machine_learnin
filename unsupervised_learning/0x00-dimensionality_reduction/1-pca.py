@@ -6,6 +6,7 @@ import numpy as np
 
 def pca(X, ndim):
     """function"""
-    _, _, V = np.linalg.svd(X)
+    mean = np.mean(X, axis=0)
+    _, _, V = np.linalg.svd(mean)
     W = V.T[:, :ndim+1]
-    return np.matmul(X, W)
+    return np.matmul(mean, W)
