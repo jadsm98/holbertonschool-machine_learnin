@@ -13,7 +13,7 @@ def posterior(x, n, p1, p2):
         raise ValueError(err)
     if x > n:
         raise ValueError("x cannot be greater than n")
-    if p1 < 0 or (p1 > 1 or not type(p1) is float:
+    if p1 < 0 or p1 > 1 or not type(p1) is float:
         raise ValueError("p1 must be a float in the range [0, 1]")
     if p2 < 0 or p2 > 1 or not type(p2) is float:
         raise ValueError("p2 must be a float in the range [0, 1]")
