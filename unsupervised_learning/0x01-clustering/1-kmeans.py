@@ -18,7 +18,8 @@ def kmeans(X, k, iterations=1000):
     high = np.amax(X, axis=0)
     cluster = np.random.uniform(low, high, size=(k, X.shape[1]))
     for _ in range(iterations):
-        clss = np.argmin(np.linalg.norm(X[:, None] - cluster, axis=-1), axis=-1)
+        clss = np.linalg.norm(X[:, None] - cluster, axis=-1)
+        clss = np.argmin(clss, axis=-1)
         copy = np.copy(cluster)
         for c in range(k):
             if c not in clss:
