@@ -30,5 +30,6 @@ def kmeans(X, k, iterations=1000):
             return (cluster, clss)
         else:
             cluster = copy
-    clss = np.argmin(np.linalg.norm(X[:, None] - cluster, axis=-1), axis=-1)
+    clss = np.argmin(np.linalg.norm(X[:, None] - cluster, axis=-1),
+                     axis=-1)
     return (cluster, clss)
