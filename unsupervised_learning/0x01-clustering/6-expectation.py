@@ -16,6 +16,9 @@ def expectation(X, pi, m, S):
         return None, None
     if not isinstance(S, np.ndarray) or len(S.shape) != 3:
         return None, None
+    n, _ = X.shape
+    k = m.shape[0]
+    intersection = np.zeros((k,n))
     for i in range(k):
         likelihood = pdf(X, m[i], S[i])
         prior = pi[i]
