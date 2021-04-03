@@ -2,7 +2,7 @@
 """module"""
 
 
-import nunpy as np
+import numpy as np
 
 
 def kmeans(X, k, iterations=1000):
