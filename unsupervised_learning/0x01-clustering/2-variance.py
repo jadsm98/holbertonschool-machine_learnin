@@ -11,9 +11,12 @@ def variance(X, C):
         return None
     if not isinstance(C, np.ndarray) or len(C.shape) != 2:
         return None
-    n, d = X.shape
-    k, _ = C.shape
-    var = np.sum((X.reshape((1, n, d)) - C.reshape((k, 1, d)))**2,
-                 axis=-1)
-    minimum = np.amin(var, axis=0)
-    return np.sum(minimum)
+    try:
+        n, d = X.shape
+        k, _ = C.shape
+        var = np.sum((X.reshape((1, n, d)) - C.reshape((k, 1, d)))**2,
+                     axis=-1)
+        minimum = np.amin(var, axis=0)
+        return np.sum(minimum)
+    except Exception:
+        return None
