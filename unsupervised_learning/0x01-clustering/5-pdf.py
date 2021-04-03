@@ -21,6 +21,5 @@ def pdf(X, m, S):
     det = np.linalg.det(S)
     denum = np.sqrt(np.power((2 * np.pi), S.shape[0]) * det)
     y = np.matmul((X - m).T, inv)
-    pdf = (1 / denum) * np.exp(-1 * np.matmul(y, (X - m)) / 2)
-    pdf = pdf.reshape(-1)[0]
+    pdf = (1 / denum) * np.exp((-1/2) * np.matmul(y, (X - m)))
     return np.where(pdf < 1e-300, 1e-300. pdf)
