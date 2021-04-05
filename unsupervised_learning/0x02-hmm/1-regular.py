@@ -11,7 +11,6 @@ def regular(P):
     if not np.all(eig_val <= 1) or not np.isreal(eig_val).all():
         return None
     try:
-        
         n = P.shape[0]
         M = (P-np.identity(n)).T
         Q = np.vstack((M[:n - 1, :], np.ones((1, n))))
