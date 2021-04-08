@@ -2,7 +2,7 @@
 """module"""
 
 
-import nunpy as np
+import numpy as np
 
 
 def forward(Observation, Emission, Transition, Initial):
