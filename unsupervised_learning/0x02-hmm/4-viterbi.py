@@ -36,5 +36,6 @@ def viterbi(Observation, Emission, Transition, Initial):
     P = np.amax(v[:, -1])
     backstart[-1] = np.argmax(v[:, -1])
     for i in range(T - 2, -1, -1):
-        backstart[i] = int(backpoint[int(backstart[i + 1]), i + 1])
-    return backstart, P
+        backstart[i] = backpoint[int(backstart[i + 1]), i + 1]
+    path = [int(i) for i in backstart]
+    return path, P
