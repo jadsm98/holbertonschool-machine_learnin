@@ -27,7 +27,7 @@ def backward(Observation, Emission, Transition, Initial):
     b[:, -1] = 1
     for j in range(T-2, -1, -1):
         for i in range(N):
-            b[i, j] = (b[:, j + 1] * Emission[:, Observation[j + 1]]).dot(Transition[i, :])
-
+            b[i, j] = (b[:, j + 1] *
+                       Emission[:, Observation[j + 1]]).dot(Transition[i, :])
     like = np.sum(Initial.T[:] * Emission[:, Observation[0]] * b[:, 0])
     return like, b
