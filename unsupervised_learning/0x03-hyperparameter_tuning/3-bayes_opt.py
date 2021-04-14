@@ -1,4 +1,4 @@
-#1/usr/bin/env python3
+#!/usr/bin/env python3
 """module"""
 
 GP = __import__('2-gp').GaussianProcess
