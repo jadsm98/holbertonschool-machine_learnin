@@ -3,6 +3,7 @@
 Gaussian Process module
 """
 
+
 import numpy as np
 
 
@@ -15,7 +16,6 @@ class GaussianProcess:
         """
         Initializer method
         """
-
         self.X = X_init
         self.Y = Y_init
         self.l = l
