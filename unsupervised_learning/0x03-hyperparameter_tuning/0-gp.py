@@ -15,7 +15,6 @@ class GaussianProcess():
         """
         Initializer method
         """
-
         self.X = X_init
         self.Y = Y_init
         self.l = l
@@ -30,6 +29,5 @@ class GaussianProcess():
         for m in range(X1.shape[0]):
             for n in range(X2.shape[0]):
                 X[m, n] = (X1[m] - X2[n])**2
-
         k = self.sigma_f**2 * np.exp(-X/(2*self.l**2))
         return k
