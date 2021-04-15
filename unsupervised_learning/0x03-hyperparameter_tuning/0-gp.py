@@ -6,7 +6,7 @@ Gaussian Process module
 import numpy as np
 
 
-class GaussianProcess:
+class GaussianProcess():
     """
     Gaussian Process class
     """
