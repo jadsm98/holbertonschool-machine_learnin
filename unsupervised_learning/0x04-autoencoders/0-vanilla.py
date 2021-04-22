@@ -5,19 +5,25 @@ import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
-    """A vanilla autoencoder"""
-    encodein = keras.Input(shape=(input_dims,))
-    latents = encodein
+    """function"""
+    l = len(hidden_layers) - 1
+    inp1 = keras.Input((input_dims,))
+    x = inp1
     for layer in hidden_layers:
-        latents = keras.layers.Dense(layer, activation="relu")(latents)
-    latents = keras.layers.Dense(latent_dims, activation="relu")(latents)
-    encoder = keras.Model(encodein, latents)
-    decodein = keras.Input(shape=(latent_dims,))
-    recons = decodein
+        x = keras.layers.Dense(layer, activation='relu')(x)
+    x = keras.layers.Dense(latent_dims, activation='relu')(x)
+
+    encoder = keras.Model(inputs=inp1, outputs=x)
+    inp2 = keras.Input((latent_dims,))
+    x = inp2
     for layer in hidden_layers[::-1]:
-        recons = keras.layers.Dense(layer, activation="relu")(recons)
-    recons = keras.layers.Dense(input_dims, activation="sigmoid")(recons)
-    decoder = keras.Model(decodein, recons)
-    autoencoder = keras.Model(encodein, decoder(encoder(encodein)))
-    autoencoder.compile(optimizer="adam", loss="binary_crossentropy")
-    return encoder, decoder, autoencoder
+        x = keras.layers.Dense(layer, activation='relu')(x)
+    x = keras.layers.Dense(input_dims, activation='sigmoid')(x)
+
+    decoder = keras.Model(inputs=inp2, outputs=x)
+    x = encoder(inp1)
+    out = decoder(x)
+    auto = keras.Model(inputs=inp1, outputs=out)
+
+    auto.compile(optimizer='adam', loss='binary_crossentropy')
+    return encoder, decoder, auto
