@@ -13,7 +13,8 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         x = keras.layers.Dense(layer, activation="relu")(x)
     mean = keras.layers.Dense(latent_dims, name="mean")(x)
     var = keras.layers.Dense(latent_dims, name="log_var")(x)
-    eps = keras.backend.random_normal(shape=(tf.shape(mean)[0], tf.shape(var)[1]))
+    eps = keras.backend.random_normal(shape=(tf.shape(mean)[0],
+                                             tf.shape(var)[1]))
     Z = mean + tf.exp(0.5 * var) * eps
     encoder = keras.Model(inputs=inp1, outputs=[Z, mean, var])
 
@@ -23,7 +24,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         x = keras.layers.Dense(layer, activation="relu")(x)
     x = keras.layers.Dense(input_dims, activation="sigmoid")(x)
     decoder = keras.Model(inputs=inp2, outputs=x)
-    z, m ,v = encoder(inp1)
+    z, m, v = encoder(inp1)
     out = decoder(z)
     auto = keras.Model(inputs=inp1, outputs=out)
     auto.compile(optimizer="adam", loss="binary_crossentropy")
