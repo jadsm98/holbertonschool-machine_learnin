@@ -15,18 +15,6 @@ def Sampling(args):
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
     """function"""
-
-    def kl_reconstruction_loss(true, pred):
-        """Loss reconstruction"""
-        reconstruction_loss = keras.losses.binary_crossentropy(model_input,
-                                                               outputs)
-        reconstruction_loss *= input_dims
-        exp = keras.backend.exp(z_log_sigma)
-        kl_loss = 1 + z_log_sigma - keras.backend.square(z_mean) - exp
-        kl_loss = keras.backend.sum(kl_loss, axis=-1)
-        kl_loss *= -0.5
-        return keras.backend.mean(reconstruction_loss + kl_loss)
-
     inp1 = keras.Input(shape=(input_dims,))
     x = inp1
     for layer in hidden_layers:
@@ -42,8 +30,8 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         x = keras.layers.Dense(layer, activation="relu")(x)
     x = keras.layers.Dense(input_dims, activation="sigmoid")(x)
     decoder = keras.Model(inputs=inp2, outputs=x)
-    z, m ,v = encoder(inp1)
+    z, m, v = encoder(inp1)
     out = decoder(z)
     auto = keras.Model(inputs=inp1, outputs=out)
-    auto.compile(optimizer="adam", loss=kl_reconstruction_loss)
+    auto.compile(optimizer="adam", loss="binary_crossentropy)
     return encoder, decoder, auto
