@@ -16,8 +16,7 @@ def RNN(rnn_cell, X, h_0):
     H[0, :, :] = h_0
     for n in range(t):
         xt = X[n, :, :].reshape((m, i))
-        h_next, y = rnn_cell.forward(h_prev, xt)
-        H[n + 1, :, :] = h_next
+        h_prev, y = rnn_cell.forward(h_prev, xt)
+        H[n + 1, :, :] = h_prev
         Y[n, :, :] = y
-        h_prev = h_next
     return H, Y
