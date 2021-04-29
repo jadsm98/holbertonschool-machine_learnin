@@ -15,7 +15,8 @@ def deep_rnn(rnn_cells, X, h_0):
     for n in range(t):
         h_prev = X[n, ...]
         for layer in range(l):
-            H[n + 1, layer, :, :], y = rnn_cells[layer].forward(H[n, layer, :, :], h_prev)
+            H[n + 1, layer, :, :], y = rnn_cells[layer].forward(
+                H[n, layer, :, :], h_prev)
             h_prev = H[n + 1, layer, :, :]
         Y.append(y)
     return H, np.asarray(Y)
