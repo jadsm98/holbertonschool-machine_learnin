@@ -2,7 +2,6 @@
 """module"""
 
 import numpy as np
-from scipy.special import softmax, expit
 
 
 class GRUCell:
@@ -20,14 +19,24 @@ class GRUCell:
         self.bh = np.zeros((1, h))
         self.by = np.zeros((1, o))
 
+    @staticmethod
+    def softmax(z):
+        """applies softmax activation"""
+        return np.exp(z)/np.sum(np.exp(z), axis=1).reshape((-1, 1))
+
+    @staticmethod
+    def sigmoid(z):
+        """applies sigmoid activation"""
+        return 1/(1 + np.exp(-z))
+
     def forward(self, h_prev, x_t):
         """GRU forward prop"""
 
         concat1 = np.hstack((h_prev, x_t))
-        z = expit(np.matmul(concat1, self.Wz) + self.bz)
-        r = expit(np.matmul(concat1, self.Wr) + self.br)
+        z = self.sigmoid(np.matmul(concat1, self.Wz) + self.bz)
+        r = self.sigmoid(np.matmul(concat1, self.Wr) + self.br)
         concat2 = np.hstack((r * h_prev, x_t))
         h = np.tanh(np.matmul(concat2, self.Wh) + self.bh)
         h_next = (1 - z) * h_prev + z * h
-        y = softmax(np.matmul(h_next, self.Wy) + self.by, axis=1)
+        y = self.softmax(np.matmul(h_next, self.Wy) + self.by)
         return h_next, y
