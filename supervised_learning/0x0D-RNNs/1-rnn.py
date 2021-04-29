@@ -6,17 +6,15 @@ import numpy as np
 
 def RNN(rnn_cell, X, h_0):
     """RNN forward prop"""
-
-    o = rnn_cell.by.shape[1]
     t, m, i = X.shape
     _, h = h_0.shape
-    H = np.zeros((t + 1, m, h))
-    Y = np.zeros((t, m, o))
+    H = []
+    Y = []
     h_prev = h_0
-    H[0, :, :] = h_0
+    H.append(h_0)
     for n in range(t):
-        xt = X[n, :, :].reshape((m, i))
+        xt = X[n, :, :]
         h_prev, y = rnn_cell.forward(h_prev, xt)
-        H[n + 1, :, :] = h_prev
-        Y[n, :, :] = y
-    return H, Y
+        H.append(h_prev)
+        Y.append(y)
+    return np.asarray(H), np.asarray(Y)
