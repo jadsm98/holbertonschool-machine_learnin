@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def RNN(rnn_cell, X, h_0):
+def rnn(rnn_cell, X, h_0):
     """RNN forward prop"""
     t, m, i = X.shape
     _, h = h_0.shape
