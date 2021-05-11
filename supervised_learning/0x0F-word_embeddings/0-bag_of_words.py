@@ -11,6 +11,6 @@ def bag_of_words(sentences, vocab=None):
 
     vector = sk.feature_extraction.text.CountVectorizer(vocabulary=vocab)
     emb = vector.fit_transform(sentences)
-    embeddings = np.asarray(emb)
+    embeddings = emb.toarray()
     features = vector.get_feature_names()
     return embeddings, features
