@@ -7,7 +7,9 @@ MultiHeadAttention = __import__('6-multihead_attention').MultiHeadAttention
 
 
 class EncoderBlock(tf.keras.layers.Layer):
+    """class"""
     def __init__(self, dm, h, hidden, rate=0.1):
+        """constructor"""
         super(EncoderBlock, self).__init__()
 
         self.mha = MultiHeadAttention(dm, h)
@@ -19,6 +21,7 @@ class EncoderBlock(tf.keras.layers.Layer):
         self.dropout2 = tf.keras.layers.Dropout(rate)
 
     def call(self, x, training, mask=None):
+        """method"""
         attn_output, _ = self.mha(x, x, x, mask)
         attn_output = self.dropout1(attn_output, training=training)
         attn_output = self.layernorm1(x + attn_output)
