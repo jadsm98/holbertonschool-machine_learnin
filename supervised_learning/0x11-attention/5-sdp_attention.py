@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+"""module"""
 
 import tensorflow as tf
 
 
 def sdp_attention(Q, K, V, mask=None):
-    """calculates the scaled dot product attention"""
+    """function"""
     qk = tf.matmul(Q, K, transpose_b=True)
     dk = tf.cast(tf.shape(K)[-1], tf.float32)
     scaled_attention_logits = qk / tf.math.sqrt(dk)
