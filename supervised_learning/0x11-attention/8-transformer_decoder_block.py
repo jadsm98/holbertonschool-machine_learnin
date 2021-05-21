@@ -6,9 +6,9 @@ MultiHeadAttention = __import__('6-multihead_attention').MultiHeadAttention
 
 
 class DecoderBlock(tf.keras.layers.Layer):
-  """class"""
+    """class"""
     def __init__(self, dm, h, hidden, rate=0.1):
-      """constructor"""
+        """constructor"""
         super(DecoderBlock, self).__init__()
         self.mha1 = MultiHeadAttention(dm, h)
         self.mha2 = MultiHeadAttention(dm, h)
@@ -26,11 +26,9 @@ class DecoderBlock(tf.keras.layers.Layer):
         attn1, _ = self.mha1(x, x, x, look_ahead_mask)
         attn1 = self.dropout1(attn1, training=training)
         out1 = self.layernorm1(attn1 + x)
-
         attn2, _ = self.mha2(out1, enc_output, enc_output, padding_mask)
         attn2 = self.dropout2(attn2, training=training)
         out2 = self.layernorm2(attn2 + out1)
-
         f_hidden = self.dense_hidden(out2)
         f_output = self.dense_output(f_hidden)
         f_output = self.dropout3(f_output, training=training)
