@@ -1,4 +1,3 @@
-  
 #!/usr/bin/env python3
 """
 Performs Bayesian optimization on a noiseless 1D Gaussian process
